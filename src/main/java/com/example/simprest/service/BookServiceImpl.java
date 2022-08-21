@@ -41,12 +41,12 @@ public class BookServiceImpl implements BookService{
     @Override
     public ResponseModel<BookResponse> save(BookRequest bookRequest) {
         Book book=new Book();
-        book.setId(bookRequest.getId());
+        //book.setId(bookRequest.getId());
         book.setName(bookRequest.getName());
         book.setType(bookRequest.getType());
         book.setPage(bookRequest.getPage());
         Author author=new Author();
-        author.setId(bookRequest.getAuthorRequest().getId());
+        //author.setId(bookRequest.getAuthorRequest().getId());
         author.setAuthor(bookRequest.getAuthorRequest().getAuthor());
         book.setAuthor(author);
         Book savedBook= bookDao.add(book);
@@ -85,12 +85,12 @@ public class BookServiceImpl implements BookService{
     @Override
     public ResponseModel<BookResponse> update(String id, BookRequest bookRequest) {
         Book book=new Book();
-        book.setId(bookRequest.getId());
+        book.setId(id);
         book.setName(bookRequest.getName());
         book.setType(bookRequest.getType());
         book.setPage(bookRequest.getPage());
         Author author=new Author();
-        author.setId(bookRequest.getAuthorRequest().getId());
+        author.setId(bookDao.getBookById(id).getAuthor().getId());
         author.setAuthor(bookRequest.getAuthorRequest().getAuthor());
         book.setAuthor(author);
         Book updatedBook=bookDao.updateBook(id,book);

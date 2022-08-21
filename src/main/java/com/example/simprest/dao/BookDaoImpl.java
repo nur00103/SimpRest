@@ -41,22 +41,23 @@ public class BookDaoImpl extends dbHelper implements BookDao {
     @Override
     public Book add(Book book) {
 
-        Author author=authorDao.save(book.getAuthor());
+        String id=UUID.randomUUID().toString();
+        Author savedAuthor=authorDao.save(book.getAuthor());
         String sql="INSERT INTO book (id,name,type,page_count,author_id) values(?,?,?,?,?)";
         try (Connection cn = connect()) {
             PreparedStatement p = cn.prepareStatement(sql);
-            p.setString(1, book.getId());
+            p.setString(1, id);
             p.setString(2, book.getName());
             p.setString(3, book.getType());
             p.setInt(4, book.getPage());
-            p.setString(5, author.getId());
+            p.setString(5, savedAuthor.getId());
             p.execute();
-            cn.commit();
+            //cn.commit();
         } catch (Exception e) {
             e.printStackTrace();
 
         }
-        return getBookById(book.getId());
+        return getBookById(id);
     }
 @Override
     public Book getBookById(String id) {

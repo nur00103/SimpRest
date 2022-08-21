@@ -9,17 +9,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class AuthorDaoImpl extends dbHelper implements AuthorDao {
     @Override
     public Author save(Author author) {
-
+       String id= UUID.randomUUID().toString();
         try (Connection cn = connect()) {
             PreparedStatement p = cn.prepareStatement("INSERT INTO author(id,author)values (?,?)");
-            p.setString(1,author.getId());
+            p.setString(1,id);
             p.setString(2, author.getAuthor());
             p.execute();
-            return getAuthorById(author.getId());
+            return getAuthorById(id);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
