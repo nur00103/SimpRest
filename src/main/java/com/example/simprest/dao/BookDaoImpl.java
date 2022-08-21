@@ -3,6 +3,7 @@ package com.example.simprest.dao;
 import com.example.simprest.db.dbHelper;
 import com.example.simprest.model.Author;
 import com.example.simprest.model.Book;
+import com.sun.xml.internal.ws.wsdl.writer.document.http.Address;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -82,5 +83,38 @@ public class BookDaoImpl extends dbHelper implements BookDao {
         e.printStackTrace();
     }
     return res;
+    }
+
+    @Override
+    public Boolean deleteBook(String id) {
+        String sql="delete from book where id=?";
+        try(Connection c=connect()){
+            PreparedStatement p=c.prepareStatement(sql);
+            p.setString(1,id);
+            p.execute();
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public Book updateBook(String id, Book book) {
+        String sql="Update book set name=?,type=?,page_count=?,author_id=? where id=?";
+        try (Connection cn = connect()) {
+            PreparedStatement p = cn.prepareStatement(sql);
+            Author updatedAuthor=authorDao.update(book.getAuthor().getId(),book.getAuthor());
+            p.setString(1,book.getName());
+            p.setString(2,book.getType());
+            p.setInt(3,book.getPage());
+            p.setString(4, updatedAuthor.getId());
+            p.setString(5,id);
+            p.execute();
+            return getBookById(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

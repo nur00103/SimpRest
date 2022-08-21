@@ -34,7 +34,7 @@ public class BookServiceImpl implements BookService{
             bookResponseList.add(bookResponse);
         }
             return ResponseModel.<List<BookResponse>>builder().result(bookResponseList)
-                    .status(Status.getSuccess()).build();
+                    .status(Status.getSuccessList()).build();
 
     }
 
@@ -60,6 +60,50 @@ public class BookServiceImpl implements BookService{
         authorResponse.setAuthor(savedBook.getAuthor().getAuthor());
         bookResponse.setAuthorResponse(authorResponse);
         return ResponseModel.<BookResponse>builder().result(bookResponse)
-                .status(Status.getSuccess()).build();
+                .status(Status.getSuccessSave()).build();
+    }
+
+    @Override
+    public ResponseModel<BookResponse> delete(String id) {
+        Book book=bookDao.getBookById(id);
+        Boolean isTrue=bookDao.deleteBook(id);
+        BookResponse bookResponse=null;
+        AuthorResponse authorResponse=null;
+//        if (isTrue){
+//            bookResponse.setId(book.getId());
+//            bookResponse.setName(book.getName());
+//            bookResponse.setType(book.getType());
+//            bookResponse.setPage(book.getPage());
+//            authorResponse.setId(book.getAuthor().getId());
+//            authorResponse.setAuthor(book.getAuthor().getAuthor());
+//            bookResponse.setAuthorResponse(authorResponse);
+//        } return ResponseModel.<BookResponse>builder().result(bookResponse)
+//                .status(Status.getSuccess()).build();
+        return ResponseModel.<BookResponse>builder().result(null).status(Status.getSuccessDelete()).build();
+    }
+
+    @Override
+    public ResponseModel<BookResponse> update(String id, BookRequest bookRequest) {
+        Book book=new Book();
+        book.setId(bookRequest.getId());
+        book.setName(bookRequest.getName());
+        book.setType(bookRequest.getType());
+        book.setPage(bookRequest.getPage());
+        Author author=new Author();
+        author.setId(bookRequest.getAuthorRequest().getId());
+        author.setAuthor(bookRequest.getAuthorRequest().getAuthor());
+        book.setAuthor(author);
+        Book updatedBook=bookDao.updateBook(id,book);
+        BookResponse bookResponse=new BookResponse();
+        bookResponse.setId(id);
+        bookResponse.setName(updatedBook.getName());
+        bookResponse.setType(updatedBook.getType());
+        bookResponse.setPage(updatedBook.getPage());
+        AuthorResponse authorResponse=new AuthorResponse();
+        authorResponse.setId(updatedBook.getAuthor().getId());
+        authorResponse.setAuthor(updatedBook.getAuthor().getAuthor());
+        bookResponse.setAuthorResponse(authorResponse);
+        return ResponseModel.<BookResponse>builder().result(bookResponse)
+                .status(Status.getSuccessUpdate()).build();
     }
 }

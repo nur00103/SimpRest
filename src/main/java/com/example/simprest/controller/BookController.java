@@ -31,4 +31,21 @@ public class BookController {
     public ResponseModel<BookResponse> bookSave(BookRequest bookRequest){
         return bookService.save(bookRequest);
     }
+
+    @DELETE
+    @Path("/{id}")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public ResponseModel<BookResponse> bookDelete(@PathParam("id") String id){
+        return bookService.delete(id);
+    }
+
+    @PUT
+    @Path("/{id}")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public ResponseModel<BookResponse> bookUpdate(@PathParam("id") String id,BookRequest bookRequest){
+        return bookService.update(id,bookRequest);
+    }
+
 }

@@ -52,4 +52,21 @@ public class AuthorDaoImpl extends dbHelper implements AuthorDao {
 
         return null;
     }
+
+    @Override
+    public Author update(String id, Author author) {
+        String sql="Update author set author=? where id=?";
+        try (Connection cn = connect()) {
+            PreparedStatement p = cn.prepareStatement(sql);
+
+            p.setString(1, author.getAuthor());
+            p.setString(2,id);
+            p.execute();
+            return getAuthorById(author.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
 }

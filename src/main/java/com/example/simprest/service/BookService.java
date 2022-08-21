@@ -10,4 +10,8 @@ public interface BookService {
     public ResponseModel<List<BookResponse>> list();
 
     public ResponseModel<BookResponse> save(BookRequest bookRequest);
+
+    public ResponseModel<BookResponse> delete(String id);
+
+    public ResponseModel<BookResponse> update(String id, BookRequest bookRequest);
 }

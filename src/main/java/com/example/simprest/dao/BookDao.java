@@ -10,4 +10,8 @@ public interface BookDao {
     public Book add(Book book);
 
     public Book getBookById(String id);
+
+    Boolean deleteBook(String id);
+
+    public Book updateBook(String id, Book book);
 }
