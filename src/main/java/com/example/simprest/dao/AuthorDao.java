@@ -12,4 +12,10 @@ public interface AuthorDao {
     public List<Address> getAllAddress();
 
     public Author update(String id,Author author);
+
+    public Author getAuthorByName(String name);
+
+
+
+
 }

@@ -70,4 +70,26 @@ public class AuthorDaoImpl extends dbHelper implements AuthorDao {
         }
 
     }
-}
+
+    @Override
+    public Author getAuthorByName(String name) {
+        Author res=null;
+
+        try (Connection c = connect()) {
+            PreparedStatement p = c.prepareStatement("SELECT * FROM author where LOWER(author) = LOWER(?)");
+            p.setString(1,name);
+            ResultSet rs = p.executeQuery();
+            if (rs.next()) {
+                String AuthorId = rs.getString("id");
+                String author = rs.getString("author");
+
+                Author author1=new Author(AuthorId,author);
+                res= author1;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
+    }

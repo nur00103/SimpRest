@@ -42,7 +42,12 @@ public class BookDaoImpl extends dbHelper implements BookDao {
     public Book add(Book book) {
 
         String id=UUID.randomUUID().toString();
-        Author savedAuthor=authorDao.save(book.getAuthor());
+        Author savedAuthor=null;
+        if (authorDao.getAuthorByName(book.getAuthor().getAuthor())==null) {
+            savedAuthor = authorDao.save(book.getAuthor());
+        }else {
+            savedAuthor=authorDao.getAuthorByName(book.getAuthor().getAuthor());
+        }
         String sql="INSERT INTO book (id,name,type,page_count,author_id) values(?,?,?,?,?)";
         try (Connection cn = connect()) {
             PreparedStatement p = cn.prepareStatement(sql);
